@@ -1,0 +1,51 @@
+let brickWidth = 50;
+let brickHeight = 20;
+let cols = 8;
+let rows = 15;
+let columnOffset = 60;
+let rowOffset = 30;
+let rotationAngle = 0; // To track the rotation angle over time
+
+function setup() {
+  createCanvas(500, 500);
+  noFill();
+  noStroke();
+}
+
+function draw() {
+  background(255, 255, 204);
+  translate(35, 35);
+
+  // Calculate the time-based rotation offset
+  rotationAngle += 0.02; // Speed of rotation
+  let rotationOffset = map(sin(rotationAngle), -1, 1, -PI / 2, PI / 2); // Smooth rotation from -90 to 90 degrees
+
+  for (let i = 0; i < cols; i++) {
+    push(); // Save current state
+    translate(i * columnOffset, 0);
+
+    let r = rotationOffset; // Use the rotation offset for each column
+
+    for (let j = 0; j < rows; j++) {
+      push(); // Save current state
+      translate(0, rowOffset * j);
+
+      // Calculate color gradient
+      let colorFactor = map(j + i, 0, rows + cols, 0, 1); // Used for generating gradient color
+      let rColor = lerpColor(color(70, 130, 180), color(138, 43, 226), colorFactor); // Gradient from blue to purple
+
+      // Set color with transparency
+      let alpha = map(j, 0, rows, 100, 255); // Varying alpha based on row index
+      fill(rColor.levels[0], rColor.levels[1], rColor.levels[2], alpha); // Gradient color with transparency
+
+      // Apply rotation
+      rotate(r); // Apply rotation
+      rect(-brickWidth / 2, -brickHeight / 2, brickWidth, brickHeight); // Draw the rectangle
+      pop(); // Restore previous state
+
+      // Adjust the rotation angle
+      r += 0.1; // Increase rotation increment for more dynamic effect
+    }
+    pop(); // Restore previous state
+  }
+}
