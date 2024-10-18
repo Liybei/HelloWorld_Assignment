@@ -1,0 +1,86 @@
+#01
+
+laptop = {
+"brand": "Apple",
+"model": "MacBook Pro",
+"processor": "2.2 GHz Quad-Core Intel Core i7",
+"battery": 100 #percentage
+}
+
+cup = {
+"brand": "none", #nobrand on it
+"type": "mug",
+"capacity": (300,500), #the capacity is between 300-500 ml
+"content": "red tea"
+}
+
+phone = {
+"brand": "Apple",
+"model": "12ProMax",
+"battery": 58, #percentage
+"network": "Ultra",
+"data": "5G",
+"connectivity": ("bluetooth", "wifi", "NFC"),
+"has_camera": True
+}
+
+ring = {
+"brand": "none", #nobrand
+"material": ("metal", "cristal"),
+"source": "gift" #a gift from my friend
+}
+
+
+#02
+
+{
+    "name": "YaYa",
+    "identity": "toy",
+    "appearance": "penguin",
+    "texture": [
+        "cotton",
+        "plastic"
+    ],
+    "size": [
+        15,
+        8
+    ],
+    "color": [
+        "white",
+        "grey",
+        "yellow",
+        "black"
+    ],
+    "has_scarf": true,
+    "has_hat": false,
+    "location": "Jersey City",
+    "age": 2,
+    "has_furry": true
+}
+
+
+#03
+
+# let the user know what's going on
+print("Welcome to MadLibs!")
+print("Answer the questions below to play.")
+print("-----------------------------------")
+
+# variables containing all of your story info
+groceries = input("Enter a grocery item from your home: ")
+color1 = input("What is your favorite color?: ")
+color2 = input("What is a color you dislike?: ")
+location = input("Where is your favorite place?: ")
+magic = input("What magic power would you like to have?: ")
+friend = input("Name a friend: ")
+your_name = input("Enter your name: ")
+
+# this is the story
+story = "One day, " + groceries + " that was " + color1 + " changed into " + color2 + ". " \
+"Suddenly, the " + groceries + " found itself having magic powers: " + magic + ". " \
+"And then the " + groceries + " turned into your friend " + friend + ". " \
+"Feeling nostalgic, " + friend + " realized her missed " + your_name + ", " \
+"so " + friend + " went to " + location + " to find " + your_name + "."
+
+# finally we print the story
+print(story)
