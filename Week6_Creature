@@ -1,0 +1,71 @@
+let energy = 0;  // Initial energy level
+let mood = 0;    // Initial mood level
+let petStage = '🥚';  // Pet starts as an egg
+let hasEvolvedToCaterpillar = false;  // Flag to track if pet has evolved to 🐛
+
+function setup() {
+  createCanvas(400, 400);
+  
+  // Create buttons
+  let feedButton = createButton('FEED');
+  feedButton.position(100, 300);
+  feedButton.mousePressed(feedPet);  // Function to increase energy
+  
+  let comfortButton = createButton('TOUCH');
+  comfortButton.position(250, 300);
+  comfortButton.mousePressed(comfortPet);  // Function to increase mood
+}
+
+function draw() {
+  background(230);
+  
+  // Display pet
+  textSize(100);
+  textAlign(CENTER, CENTER);
+  text(petStage, width / 2, height / 2);
+  
+  // Display energy and mood bars
+  drawStatBars();
+  
+  // Check pet evolution based on energy and mood
+  evolvePet();
+}
+
+// Draw energy and mood bars at the top left corner
+function drawStatBars() {
+  // Energy bar
+  fill('#3E78B2'); 
+  rect(20, 20, map(energy, 0, 100, 0, 150), 20);
+  fill(0);
+  textSize(12);
+  text('Energy: ' + energy + '%', 80, 35);
+  
+  // Mood bar
+  fill('#FFC107');  
+  rect(20, 50, map(mood, 0, 100, 0, 150), 20);
+  fill(0);
+  textSize(12);
+  text('Mood: ' + mood + '%', 80, 65);
+}
+
+// Function to increase energy by 25%, but not exceeding 100%
+function feedPet() {
+  energy = min(energy + 25, 100);
+}
+
+// Function to increase mood by 25%, but not exceeding 100%
+function comfortPet() {
+  mood = min(mood + 25, 100);
+}
+
+// Function to evolve the pet based on energy and mood levels
+function evolvePet() {
+  if (energy >= 50 && mood >= 50 && !hasEvolvedToCaterpillar) {
+    petStage = '🐛';  // Pet evolves to caterpillar
+    hasEvolvedToCaterpillar = true;  // Mark that it has evolved to caterpillar
+  }
+  
+  if (energy === 100 && mood === 100) {
+    petStage = '🦋';  // Pet evolves to butterfly
+  }
+}
