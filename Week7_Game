@@ -1,0 +1,121 @@
+let snake;
+let food;
+let gridSize = 20;
+let score = 0;
+
+function setup() {
+  createCanvas(400, 400);
+  frameRate(8);
+  snake = new Snake();
+  spawnFood();
+}
+
+function draw() {
+  background(220);
+
+  // Draw food
+  fill(255, 0, 0);
+  textSize(gridSize);
+  text('🥚', food.x, food.y);
+
+  // Update and draw snake
+  snake.update();
+  snake.show();
+
+  // Check if the snake eats the food
+  if (snake.eat(food)) {
+    score++;
+    spawnFood();
+  }
+
+  // Draw score
+  fill(0);
+  textSize(16);
+  textAlign(LEFT, BOTTOM);
+  text("Score: " + score, 10, height - 10);
+}
+
+function spawnFood() {
+  let cols = floor(width / gridSize);
+  let rows = floor(height / gridSize);
+  food = createVector(floor(random(cols)), floor(random(rows)));
+  food.mult(gridSize);
+}
+
+function keyPressed() {
+  if (keyCode === UP_ARROW && snake.ydir === 0) {
+    snake.setDir(0, -1);
+  } else if (keyCode === DOWN_ARROW && snake.ydir === 0) {
+    snake.setDir(0, 1);
+  } else if (keyCode === LEFT_ARROW && snake.xdir === 0) {
+    snake.setDir(-1, 0);
+  } else if (keyCode === RIGHT_ARROW && snake.xdir === 0) {
+    snake.setDir(1, 0);
+  }
+}
+
+class Snake {
+  constructor() {
+    this.body = [];
+    this.body[0] = createVector(floor(width / 2), floor(height / 2));
+    this.xdir = 0;
+    this.ydir = 0;
+    this.len = 1;
+  }
+
+  setDir(x, y) {
+    this.xdir = x;
+    this.ydir = y;
+  }
+
+  update() {
+    let head = this.body[this.body.length - 1].copy();
+    head.x += this.xdir * gridSize;
+    head.y += this.ydir * gridSize;
+    this.body.push(head);
+
+    if (this.body.length > this.len) {
+      this.body.shift();
+    }
+
+    // Check for self-collision
+    for (let i = 0; i < this.body.length - 1; i++) {
+      let part = this.body[i];
+      if (part.x === head.x && part.y === head.y) {
+        this.gameOver();
+      }
+    }
+
+    // Prevent moving out of bounds
+    if (head.x >= width) head.x = width - gridSize;
+    if (head.x < 0) head.x = 0;
+    if (head.y >= height) head.y = height - gridSize;
+    if (head.y < 0) head.y = 0;
+  }
+
+  eat(pos) {
+    let head = this.body[this.body.length - 1];
+    if (head.x === pos.x && head.y === pos.y) {
+      this.len++;
+      return true;
+    }
+    return false;
+  }
+
+  gameOver() {
+    print("Game Over. Score: " + score);
+    noLoop();
+    textSize(32);
+    fill(255, 0, 0);
+    textAlign(CENTER, CENTER);
+    text("Game Over!", width / 2, height / 2);
+  }
+
+  show() {
+    for (let i = 0; i < this.body.length; i++) {
+      fill(0);
+      noStroke();
+      rect(this.body[i].x, this.body[i].y, gridSize, gridSize);
+    }
+  }
+}
